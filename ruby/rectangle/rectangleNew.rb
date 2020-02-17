@@ -8,6 +8,9 @@ puts ""
 puts ""
 puts "C2 DOIT être + grand que C1"
 puts ""
+# TODO 
+puts "TODO : vérifier que le code se comporte bien quand il n'y a pas de correspondance + refactoriser en méthodes"
+puts ""
 puts "~~~~"
 puts ""
 
@@ -87,7 +90,7 @@ while cpt_L_c2 < c2.length() && strike < strikeMax
         cpt_E_c2 += 1
 
         puts cpt_E_c1
-        # ??? Peut etre remplacé par un while qui inclut le : if (c1[cpt_L_c1][cpt_E_c1] == c2[cpt_L_c2][cpt_E_c2])
+        # Strike est la condition de sortie : une fois qu'on a vérifié toutes les valeurs de c1
         if cpt_E_c1 == c1[0].length() && strike != strikeMax
             puts ("Changing c1 line + carret ...")
             cpt_L_c1 += 1
@@ -103,7 +106,8 @@ while cpt_L_c2 < c2.length() && strike < strikeMax
     end
 
 
-
+    # A vérifier mais normalement ça sert à reprendre les recherches à la colonne 0 si jamais on n'avait pas trouvé de coordonnées.
+    # mais c'est potentiellement inutile selon les conditions précédentes.
     if coord.empty?
         cpt_E_c2 = 0
     end
