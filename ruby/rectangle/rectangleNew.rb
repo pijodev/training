@@ -116,5 +116,8 @@ while cpt_L_c2 < c2.length() && strike < strikeMax
     puts("")
 end
 
-
-puts coord
+if coord.empty?
+    puts("Pas de correspondance trouvée ...")
+else
+    puts coord
+end
