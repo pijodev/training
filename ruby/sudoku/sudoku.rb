@@ -38,9 +38,11 @@ def transformToMultiDimArray(sudoku)
 
     sudokuArr = []
 
+    caracSpec = ['|','_', '-', '+']
+
     while cpt_L < nb_lin
         while cpt_C < nb_col
-            if (sudoku[cpt_L][cpt_C].to_s == ('|' || '_' || '-' || '+'))
+            if (caracSpec.include?(sudoku[cpt_L][cpt_C].to_s))
                 puts("Caractère #{sudoku[cpt_L][cpt_C].to_s}")
             else
                 puts("Nombre #{sudoku[cpt_L][cpt_C].to_s}")
