@@ -151,6 +151,7 @@ end
 
 # Regroupe en carrés de 9 chiffres
 def calculateInsideSquare(linePos, colPos, strPos, sudokuArr)
+    found = false
     coordSquare = checkSquare(linePos, colPos, strPos)
     p coordSquare 
     line_start_stop = []
@@ -171,12 +172,12 @@ def calculateInsideSquare(linePos, colPos, strPos, sudokuArr)
                 # TODO : trouver le moyen de remplacer le tiret aux coordonnées indiquées par la valeur calculée
                 sudokuArr[linePos][colPos].tr!("_", k.to_s)
                 puts sudokuArr[linePos][colPos]
+                found = true
             end
         end
     end
-    # TODO : vérifier que cette condition permet bien de sortir de la boucle du main. Ca servirait à éviter les potentielles collisions
-    # ou alors renvoyer un boolean et n'activer les fonctions calculate uniquement que si le boolean est à false
-    # break
+    # Bool inutile mais flemme .. pas très YAGNI tout ça
+    return found
 end
 
 
@@ -191,6 +192,7 @@ end
 def calculateInsideLine(linePos, colPos, strPos, sudokuArr)
 
     # A REFACTORER
+    found = false
     tmp = ""
     for i in 0..sudokuArr[linePos].length()-1
         puts sudokuArr[linePos][i]
@@ -204,9 +206,12 @@ def calculateInsideLine(linePos, colPos, strPos, sudokuArr)
                 # TODO : trouver le moyen de remplacer le tiret aux coordonnées indiquées par la valeur calculée
                 sudokuArr[linePos][colPos].tr!("_", k.to_s)
                 puts sudokuArr[linePos][colPos]
+                found = true
             end
         end
     end
+    # Bool inutile mais flemme .. pas très YAGNI tout ça
+    return found
 end
 
 
@@ -218,8 +223,9 @@ end
 
 
 def calculateInsideCol(linePos, colPos, strPos, sudokuArr)
-
+    
     # A REFACTORER
+    found = false
     tmp = ""
     for i in 0..sudokuArr.length()-1
         puts sudokuArr[i][colPos][strPos]
@@ -233,14 +239,34 @@ def calculateInsideCol(linePos, colPos, strPos, sudokuArr)
                 # TODO : trouver le moyen de remplacer le tiret aux coordonnées indiquées par la valeur calculée
                 sudokuArr[linePos][colPos].tr!("_", k.to_s)
                 puts sudokuArr[linePos][colPos]
+                found = true
             end
         end
     end
+
+    # Bool inutile mais flemme .. pas très YAGNI tout ça
+    return found
 end
 
 
+######################################
+#######                        #######
+#######        COUNT "_"       #######
+#######                        #######
+######################################
 
-
+def countMissingValues(sudokuArr)
+    counter = 0
+    for i in 0..sudokuArr.length()-1
+        for k in 0..sudokuArr[0].length()-1
+            # p sudokuArr[i][k]
+            if (sudokuArr[i][k].include?("_")) 
+                counter += 1
+            end
+        end
+    end
+    return counter
+end
 
 
 ######################################
@@ -250,22 +276,34 @@ end
 ######################################
 
 def main(sudokuArr)
-    for i in 0..sudokuArr.length()-1
-        for k in 0..sudokuArr[0].length()-1
-            # p sudokuArr[i][k]
-            if sudokuArr[i][k].include?("_")
-                # FONCTIONNEL en solo 
-                # calculateInsideLine(i, k, sudokuArr[i][k].index('_'), sudokuArr)
+    counter = countMissingValues(sudokuArr)
+    cpt_L = 0
+    cpt_C = 0
+    while counter > 0
+        puts ("#{counter} more values to solve ! ")
+        for i in 0..sudokuArr.length()-1
+            for k in 0..sudokuArr[0].length()-1
+                # p sudokuArr[i][k]
+                if (sudokuArr[i][k].include?("_")) 
 
-                # FONCTIONNEL en solo 
-                calculateInsideCol(i, k, sudokuArr[i][k].index('_'), sudokuArr)
-                
-                # FONCTIONNEL en solo 
-                # calculateInsideSquare(i, k, sudokuArr[i][k].index('_'), sudokuArr)
+                    randValue = rand 0..2
+
+                    case randValue
+                    when 0
+                        calculateInsideSquare(i, k, sudokuArr[i][k].index('_'), sudokuArr)
+                    when 1
+                        calculateInsideLine(i, k, sudokuArr[i][k].index('_'), sudokuArr)
+                    when 2
+                        calculateInsideCol(i, k, sudokuArr[i][k].index('_'), sudokuArr)
+                    end
+
+                end
             end
         end
+        counter = countMissingValues(sudokuArr)
+        puts ("#{counter} remaining to solve ")
     end
-    puts ("------")
+    puts ("--------------------")
     p sudokuArr
 end
 
