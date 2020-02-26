@@ -155,6 +155,8 @@ def calculateInsideSquare(linePos, colPos, strPos, sudokuArr)
     p coordSquare 
     line_start_stop = []
     line_start_stop = defineRange(coordSquare)
+
+    # A REFACTORER
     tmp = ""
     # Regrouper tous les éléments appartenant au gros carré en 1 ligne : si un seul "_" appartient au carré, alors on résoud la valeur manquante 
     for i in line_start_stop[0]..line_start_stop[1]
@@ -188,6 +190,7 @@ end
 
 def calculateInsideLine(linePos, colPos, strPos, sudokuArr)
 
+    # A REFACTORER
     tmp = ""
     for i in 0..sudokuArr[linePos].length()-1
         puts sudokuArr[linePos][i]
@@ -207,6 +210,33 @@ def calculateInsideLine(linePos, colPos, strPos, sudokuArr)
 end
 
 
+######################################
+#######                        #######
+#######     CALCULATE COLUMN   #######
+#######                        #######
+######################################
+
+
+def calculateInsideCol(linePos, colPos, strPos, sudokuArr)
+
+    # A REFACTORER
+    tmp = ""
+    for i in 0..sudokuArr.length()-1
+        puts sudokuArr[i][colPos][strPos]
+        tmp.concat(sudokuArr[i][colPos][strPos])
+    end
+    p tmp
+    if tmp.scan(/_/).length() == 1
+        for k in 1..9
+            if !tmp.include?(k.to_s)
+                puts("I found the missing ! #{k}")
+                # TODO : trouver le moyen de remplacer le tiret aux coordonnées indiquées par la valeur calculée
+                sudokuArr[linePos][colPos].tr!("_", k.to_s)
+                puts sudokuArr[linePos][colPos]
+            end
+        end
+    end
+end
 
 
 
@@ -224,13 +254,16 @@ def main(sudokuArr)
         for k in 0..sudokuArr[0].length()-1
             # p sudokuArr[i][k]
             if sudokuArr[i][k].include?("_")
-                calculateInsideLine(i, k, sudokuArr[i][k].index('_'), sudokuArr)
-                # puts("&-&-&-&-&-&-&")
-                # FONCTIONNEL en solo mais pas en combinaison avec calculateInsideLine
+                # FONCTIONNEL en solo 
+                # calculateInsideLine(i, k, sudokuArr[i][k].index('_'), sudokuArr)
+
+                # FONCTIONNEL en solo 
+                calculateInsideCol(i, k, sudokuArr[i][k].index('_'), sudokuArr)
+                
+                # FONCTIONNEL en solo 
                 # calculateInsideSquare(i, k, sudokuArr[i][k].index('_'), sudokuArr)
             end
         end
-        # puts ("&-&-&-&-&-&-&&-&-&-&-&-&-&")
     end
     puts ("------")
     p sudokuArr
